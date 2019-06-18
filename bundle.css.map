@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../src/App.svelte",
+    "../src/Title.svelte",
+    "../src/Cards.svelte",
+    "../src/Loading.svelte",
+    "../src/SearchBox.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import Title from \"./Title.svelte\"\n  import Cards from \"./Cards.svelte\"\n  import Loading from \"./Loading.svelte\"\n  import { onMount } from \"svelte\"\n  import SearchBox from \"./SearchBox.svelte\"\n\n  //const url = \"https://gateway.marvel.com:443/v1/public/characters?limit=100&offset=0&ts=thesoer&apikey=ccfdb54fc361f803d07855f3895d14b0&hash=8985759a11dab023d6f13a17d1fba148\"\nconst  url = \"/characters.json\"\n  let data, characters = null\n\n  onMount(async () => {\n    const results = await fetch(url)\n    data = await results.json()\n    //console.log(data)\n    characters = data\n  })\n</script>\n\n<style>\n.content {\n  width: 70%;\n   margin: auto;\n    background-color: yellow;\n  }\n.cards {\n  background-color: rgb(189, 195, 199);\n   border-radius: 20px;\n   display: flex;\n   flex-wrap: wrap;\n   justify-content: space-evenly;\n }\n</style>\n\n<div class=\"content\">\n  <Title />\n  <SearchBox data={data} bind:characters={characters} />\n  {#if data == null}\n    <Loading />\n  {:else}\n  <div class=\"cards\">\n    <Cards characters={characters}/>\n  </div>\n  {/if}\n</div>\n",
+    "<style>\n  h1 {\n    color: rgb(231, 76, 60);\n    font-size: 75px;\n    text-align: center;\n  }\n</style>\n\n<h1>Marvel Characters</h1>\n",
+    "<script>\n  export let characters\n  console.log(characters)\n</script>\n\n<style>\n  .card {\n    width: 40%;\n    border-bottom: 5px solid rgb(231, 76, 60);\n    color: rgb(44, 62, 80);\n  }\n\n  h3 {\n    text-align: center;\n    font-size: 30px;\n  }\n\n  img {\n    width: 100%;\n    opacity: 0.8;\n  }\n\n  img:hover {\n    opacity: 1;\n  }\n</style>\n\n{#each characters as { name, img, description, link }}\n  <div class=\"card\">\n      <h3>{name}</h3>\n      <a href={link} target=\"_blank\">\n        <img\n          alt=\"Image of Marvel Character\"\n          src={img}\n        />\n      </a>\n      <p>{description}</p>\n  </div>\n{/each}\n",
+    "<style>\n  h1 {\n    text-align: center;\n    color: rgb(231, 76, 60);\n  }\n</style>\n\n<h1>Loading...</h1>\n",
+    "<script>\n  export let data\n  export let characters\n\nconst searchCharacters = event => {\n  characters = data.filter(character => {\n    let search = event.target.value.toLowerCase()\n    let name = character.name.toLowerCase()\n    return name.includes(search)\n  })\n}\n</script>\n\n\n<style>\n\n  input {\n    margin: auto;\n    display: block;\n    text-align: center;\n    margin-bottom: 2%;\n    font-size: 24px;\n    color: black;\n    background-color: rgb(189, 195, 199);\n  }\n  </style>\n\n<div class=\"search\">\n  <input\n  placeholder=\"search characters...\"\n  on:input={searchCharacters}\n/>\n</div>\n"
+  ],
+  "names": [],
+  "mappings": "AAoBA,QAAQ,eAAC,CAAC,AACR,KAAK,CAAE,GAAG,CACT,MAAM,CAAE,IAAI,CACX,gBAAgB,CAAE,MAAM,AAC1B,CAAC,AACH,MAAM,eAAC,CAAC,AACN,gBAAgB,CAAE,IAAI,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,GAAG,CAAC,CACnC,aAAa,CAAE,IAAI,CACnB,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,IAAI,CACf,eAAe,CAAE,YAAY,AAC/B,CAAC;AC9BA,EAAE,cAAC,CAAC,AACF,KAAK,CAAE,IAAI,GAAG,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CACvB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,MAAM,AACpB,CAAC;ACCD,KAAK,eAAC,CAAC,AACL,KAAK,CAAE,GAAG,CACV,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,GAAG,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,CACzC,KAAK,CAAE,IAAI,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,AACxB,CAAC,AAED,EAAE,eAAC,CAAC,AACF,UAAU,CAAE,MAAM,CAClB,SAAS,CAAE,IAAI,AACjB,CAAC,AAED,GAAG,eAAC,CAAC,AACH,KAAK,CAAE,IAAI,CACX,OAAO,CAAE,GAAG,AACd,CAAC,AAED,kBAAG,MAAM,AAAC,CAAC,AACT,OAAO,CAAE,CAAC,AACZ,CAAC;ACvBD,EAAE,cAAC,CAAC,AACF,UAAU,CAAE,MAAM,CAClB,KAAK,CAAE,IAAI,GAAG,CAAC,CAAC,EAAE,CAAC,CAAC,EAAE,CAAC,AACzB,CAAC;ACYD,KAAK,cAAC,CAAC,AACL,MAAM,CAAE,IAAI,CACZ,OAAO,CAAE,KAAK,CACd,UAAU,CAAE,MAAM,CAClB,aAAa,CAAE,EAAE,CACjB,SAAS,CAAE,IAAI,CACf,KAAK,CAAE,KAAK,CACZ,gBAAgB,CAAE,IAAI,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,GAAG,CAAC,AACtC,CAAC"
+}
